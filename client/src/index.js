@@ -5,9 +5,7 @@ import{createStore, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import reducers from './reducers'; // index.js exports the function combineReducers
 import './index.css';
-import Auth0ProviderWithHistory from "./auth0-provider-with-history";
 import App from './App';
-import { BrowserRouter } from 'react-router-dom';
 
 // create a store component that basically saves our state and data etc in redux form that is accessible all over the project.\
 
@@ -20,11 +18,9 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 root.render(    
 
     <Provider store={store}>
-        <BrowserRouter>
-        <Auth0ProviderWithHistory>    
+ 
         <App />
-        </Auth0ProviderWithHistory>
-        </BrowserRouter>
+
         
     </Provider>
 
