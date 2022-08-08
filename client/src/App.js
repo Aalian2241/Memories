@@ -6,31 +6,53 @@ import memories from "./Images/memories.png";
 // two major components imported as Form and Posts
 import { Posts } from './Components/Posts/Posts';
 import { Form } from './Components/Form/Form';
+import { AuthProvider } from './contexts/AuthContext';
+import {Dashboard} from "./Components/Dashboard/Dashboard";
+import SignUp from "./Components/Signup/signup2";
+import {Login} from "./Components/Login/Login";
 import {getPosts} from "./actions/posts.js";
 import useStyles from "./styles";
-import {LoginScreen} from "./Components/Login/LoginScreen";
-import firebase from "firebase/compat/app";
-import 'firebase/compat/auth';
-import 'firebase/compat/messaging';
-import 'firebase/compat/firestore';
-
-import {
-    getAuth,
-    onAuthStateChanged,
-    GoogleAuthProvider, GithubAuthProvider, EmailAuthProvider, signInWithPopup,
-    signOut,
-  } from 'firebase/auth';
-
-  let app;
-  app = firebase.initializeApp({
-    authDomain:"memories-aalian.firebaseapp.com",
-    apiKey:'AIzaSyAsnBT0te0lBhWZXGNqL3h4cJ21oA3WyX8'
-});
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 
-  const auth = firebase.auth();
+const HomePage = (props)=>{
+    console.log(props);
+    return(
+        <Container maxwidth = "lg">
+            <div align="right"> <Dashboard align="right"/></div>
+        <AppBar className={props.classes_.appBar} position="static" color="inherit">
+           <Typography className={props.classes_.heading} variant="h2" align="center">Memories</Typography>
+           <img className={props.classes_.image} src={memories} alt = "memories" height="70" width={120}/> 
+           
+        </AppBar>
+
+        <Grow in> 
+
+            <Container >  
+                <Grid container className={props.classes_.mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
+                
+                    <Grid item xs={12} sm={7}>    
+                        <Posts setCurrentId={props.setCurrentId_}/>
+                    </Grid>
+
+                    <Grid item xs={12} sm={4}>      
+                        <Form currentId={props.currentId_} setCurrentId={props.setCurrentId_}/>
+                    </Grid>
+
+                </Grid>
+            </Container>
+
+        </Grow>
+
+    </Container>
+    )
+    
+}
 const App = () => {
+    //useStates
     const [currentId, setCurrentId] =useState(null);
+    const [loginState, setLoginState] = useState("false");
+
     const classes = useStyles();
     const dispatch = useDispatch();
     
@@ -38,67 +60,46 @@ const App = () => {
     useEffect(()=>{
         dispatch(getPosts());
     },[currentId,dispatch]);
-    const [loginState, setLoginState]= useState("false");
-
-    const uiConfig = {
-        signInFlow:"popup",
-        signInOptions:[
-            GoogleAuthProvider.PROVIDER_ID,
-            GithubAuthProvider.PROVIDER_ID,
-            EmailAuthProvider.PROVIDER_ID
-        ],
-        callbacks:{
-            signInSuccess: ()=>false}
-    };
-    const componentDidMount=()=>{
-        auth.onAuthStateChanged(
-            user =>{
-                setLoginState(!!user);
-                console.log("Auth state changed");
-            }
-        );
-    
-    };
-        
-    if(loginState==="false"){
-        return (
-        <LoginScreen config={uiConfig}/>
-        )
+    console.log(loginState);
+    //HomePage Component
+    let props= {
+        currentId_:currentId,
+        setCurrentId_:setCurrentId,
+        classes_:classes
     }
-    else
-    {
-        return (// 
-        
-        <Container maxwidth = "lg">
-                 <AppBar className={classes.appBar} position="static" color="inherit">
-                <Typography className={classes.heading} variant="h2" align="center">Memories </Typography>
-                <img className={classes.image} src={memories} alt = "memories" height="70" width={120}/> 
-                <button onClick={()=>{auth.signOut()}}> Sign Out</button>
 
-                </AppBar>
-                <Grow in> 
-                  
-                  <Container >
-                      
-                      <Grid container className={classes.mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
-                        
-                          <Grid item xs={12} sm={7}>
-                              
-                              <Posts setCurrentId={setCurrentId}/>
-                          </Grid>
-                          <Grid item xs={12} sm={4}>
-                              
-                              <Form currentId={currentId} setCurrentId={setCurrentId}/>
-                          </Grid>
-                      </Grid>
-  
-                  </Container>
-              </Grow>
-        </Container>
+
+    if (loginState ==="false"){
+
+        return( 
+        <AuthProvider>
+            <Container maxwidth="sm" align="left" style={{minwidth:"100vh"}} >
+                <div style={{maxwidth:"300vh"}}>
+                <Router>
+                    <AuthProvider>
+                        <Routes>
+                            <Route exact path = "/" element={<HomePage {...props}/>}/>
+                            <Route path = "/signup" element={<SignUp/>}/>
+                            <Route path = "/dashboard" element={<Dashboard/>}/>
+                            <Route path = "/login" element={<Login/>}/>
+                        </Routes>
+                    </AuthProvider>
+                </Router>
+                </div>    
+            </Container>
+        </AuthProvider>
+        
+        )
+    }else{
+        
+        return (
+        
+           <>
+           <HomePage {...props}/>
+           </>
+            
         );
     
-    } ;
-
-};
+    }
+    }
 export default App;
-
