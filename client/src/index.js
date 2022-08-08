@@ -7,6 +7,7 @@ import reducers from './reducers'; // index.js exports the function combineReduc
 import './index.css';
 import App from './App';
 
+
 // create a store component that basically saves our state and data etc in redux form that is accessible all over the project.\
 
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
@@ -18,10 +19,8 @@ const root = createRoot(container); // createRoot(container!) if you use TypeScr
 root.render(    
 
     <Provider store={store}>
- 
-        <App />
 
-        
+        <App />
     </Provider>
 
     );    
