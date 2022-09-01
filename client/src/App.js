@@ -2,7 +2,6 @@ import React, { useEffect,useState } from 'react';
 import {Container, AppBar, Typography, Grow, Grid} from "@material-ui/core";
 import { useDispatch } from 'react-redux';
 import memories from "./Images/memories.png";
-
 // two major components imported as Form and Posts
 import { Posts } from './Components/Posts/Posts';
 import { Form } from './Components/Form/Form';
@@ -13,6 +12,7 @@ import {Login} from "./Components/Login/Login";
 import {getPosts} from "./actions/posts.js";
 import useStyles from "./styles";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import PrivateRoute from './Components/PrivateRoutes/PrivateRoute';
 
 
 const HomePage = (props)=>{
@@ -51,6 +51,8 @@ const HomePage = (props)=>{
 }
 const App = () => {
     //useStates
+
+
     const [currentId, setCurrentId] =useState(null);
     const [loginState, setLoginState] = useState("false");
 
@@ -58,22 +60,16 @@ const App = () => {
     const dispatch = useDispatch();
     
     // update the posts using useEffect
-    useEffect(
-        ()=>{dispatch(getPosts());}
-        ,
-        [currentId,dispatch]
-        );
-
-    console.log(loginState);
+    useEffect(()=>{
+        dispatch(getPosts());
+    },[currentId,dispatch]);
+    
     //HomePage Component
     let props= {
         currentId_:currentId,
         setCurrentId_:setCurrentId,
         classes_:classes
     }
-
-
-    if (loginState ==="false"){
 
         return( 
         <AuthProvider>
@@ -82,10 +78,13 @@ const App = () => {
                 <Router>
                     <AuthProvider>
                         <Routes>
-                            <Route exact path = "/" element={<HomePage {...props}/>}/>
+                            <Route element={<PrivateRoute/>}>
+                            <Route path = "/" element={<HomePage {...props}/>}/>    
+                            </Route>
                             <Route path = "/signup" element={<SignUp/>}/>
                             <Route path = "/dashboard" element={<Dashboard/>}/>
                             <Route path = "/login" element={<Login/>}/>
+                           
                         </Routes>
                     </AuthProvider>
                 </Router>
@@ -94,16 +93,5 @@ const App = () => {
         </AuthProvider>
         
         )
-    }else{
-        
-        return (
-        
-           <>
-           <HomePage {...props}/>
-           </>
-            
-        );
-    
-    }
     }
 export default App;
