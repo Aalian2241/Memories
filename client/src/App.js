@@ -17,6 +17,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 const HomePage = (props)=>{
     console.log(props);
+
     return(
         <Container maxwidth = "lg">
             <div align="right"> <Dashboard align="right"/></div>
@@ -57,9 +58,12 @@ const App = () => {
     const dispatch = useDispatch();
     
     // update the posts using useEffect
-    useEffect(()=>{
-        dispatch(getPosts());
-    },[currentId,dispatch]);
+    useEffect(
+        ()=>{dispatch(getPosts());}
+        ,
+        [currentId,dispatch]
+        );
+
     console.log(loginState);
     //HomePage Component
     let props= {
