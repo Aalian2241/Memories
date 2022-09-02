@@ -22,10 +22,11 @@ export const Form = ({currentId, setCurrentId}) => {
     const handleSubmit = (e)=>{
         e.preventDefault(); // to prevent refresh
         if (currentId){
-            console.log(postData)
+            
             dispatch(updatePost(currentId,postData));
         }
         else{
+            console.log("postData: "+postData)
             dispatch(createPost(postData));
         }
         clear();

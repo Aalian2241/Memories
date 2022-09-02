@@ -1,13 +1,8 @@
 import mongoose from "mongoose";
 
-const postSchema = mongoose.Schema({
+const postSchema_prv = new mongoose.Schema({
+    owner:String,
     title:String,
-    owner:{
-        type:{
-            type:String
-        }
-        
-    },
     message:String,
     creator:String, 
     tags:[String],
@@ -24,5 +19,5 @@ const postSchema = mongoose.Schema({
 });
 
 
-const PostMessage = mongoose.model("PostMessage", postSchema);
+const PostMessage = mongoose.model("PostMessage", postSchema_prv);
 export default PostMessage;

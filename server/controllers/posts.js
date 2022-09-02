@@ -6,11 +6,10 @@ import PostMessage from "../models/postMessage.js";
 
 export const getPosts = async (req,res)=>{
     const {ownerinfo} = req.body;
-    console.log("owner: "+ownerinfo)
+    //console.log("owner: "+ownerinfo)
     try{
-        console.log("fetching post");
     const postMessages = await PostMessage.find({owner:ownerinfo});
-    console.log (postMessages);
+    //console.log (postMessages);
 
     res.status(200).json(postMessages);
     }
@@ -23,11 +22,10 @@ export const getPosts = async (req,res)=>{
 export const createPosts = async (req,res)=>{
     
     // create post body
-    const post = req.body; 
-    
+    const post = req.body;
+    const {owner} = post 
     // create document to save in mongodb
     const newPost = new PostMessage(post);
-
     // save the document in mongodb
     try {
         await newPost.save();

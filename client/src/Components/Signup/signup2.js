@@ -38,6 +38,7 @@ export default function SignUp() {
     try{
       setError('');
       setLoading(true);
+      
       await signup(data.get('email'),  data.get('password'));
       //once user has signed up, send user to dashboard
 
@@ -55,6 +56,7 @@ export default function SignUp() {
   };
 
   return (
+    
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -73,8 +75,7 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            {currentUser.email}
+          <Box component="form" Validate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
