@@ -5,6 +5,7 @@ import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import moment from 'moment';
+import {useAuth} from "../../../contexts/AuthContext";
 import { useDispatch } from 'react-redux';
 import {deletePost,likePost} from '../../../actions/posts.js' ;
 
@@ -12,6 +13,7 @@ import {deletePost,likePost} from '../../../actions/posts.js' ;
 const Post = ({ post, setCurrentId }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
+
 
   return (
     <Card className={classes.card}>

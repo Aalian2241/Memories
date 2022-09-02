@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import memories from "./Images/memories.png";
 // two major components imported as Form and Posts
 import { Posts } from './Components/Posts/Posts';
+import {useAuth} from "./contexts/AuthContext";
 import { Form } from './Components/Form/Form';
 import { AuthProvider } from './contexts/AuthContext';
 import {Dashboard} from "./Components/Dashboard/Dashboard";
@@ -16,8 +17,14 @@ import PrivateRoute from './Components/PrivateRoutes/PrivateRoute';
 
 
 const HomePage = (props)=>{
-    console.log(props);
-
+    const {currentUser} = useAuth();
+    const dispatch = useDispatch();
+    console.log(currentUser["_delegate"]["email"])
+    
+    // update the posts using useEffect
+    useEffect(()=>{
+        dispatch(getPosts(currentUser["_delegate"]["email"]));
+    },[props.currentId,dispatch,currentUser]);
     return(
         <Container maxwidth = "lg">
             <div align="right"> <Dashboard align="right"/></div>
@@ -51,18 +58,11 @@ const HomePage = (props)=>{
 }
 const App = () => {
     //useStates
-
-
-    const [currentId, setCurrentId] =useState(null);
-    const [loginState, setLoginState] = useState("false");
-
-    const classes = useStyles();
-    const dispatch = useDispatch();
     
-    // update the posts using useEffect
-    useEffect(()=>{
-        dispatch(getPosts());
-    },[currentId,dispatch]);
+    
+    const [currentId, setCurrentId] =useState(null);
+    const classes = useStyles();
+    
     
     //HomePage Component
     let props= {

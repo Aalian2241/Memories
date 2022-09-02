@@ -5,9 +5,12 @@ import PostMessage from "../models/postMessage.js";
 
 
 export const getPosts = async (req,res)=>{
+    const {ownerinfo} = req.body;
+    console.log("owner: "+ownerinfo)
     try{
-    const postMessages = await PostMessage.find();
-    // console.log (postMessages);
+        console.log("fetching post");
+    const postMessages = await PostMessage.find({owner:ownerinfo});
+    console.log (postMessages);
 
     res.status(200).json(postMessages);
     }

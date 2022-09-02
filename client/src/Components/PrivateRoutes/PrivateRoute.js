@@ -7,7 +7,6 @@ import { Login } from "../Login/Login";
 // create a wrapper for our current route
 export default function PrivateRoute (){
     const {currentUser} = useAuth();
-
     
         
     return currentUser? <Outlet/>: <Login/>;

@@ -4,10 +4,11 @@ import {TextField, Button, Typography, Paper} from "@material-ui/core";
 import FileBase from "react-file-base64";
 import { useDispatch,useSelector } from 'react-redux';
 import {createPost, updatePost} from '../../actions/posts.js' ;
-
+import { useAuth } from '../../contexts/AuthContext';
 export const Form = ({currentId, setCurrentId}) => {
 
-    const [postData, setPostData] = useState({creator:"", title:"",message:"",tags:"",selectedFile:""});
+    const {currentUser} = useAuth();
+    const [postData, setPostData] = useState({creator:"", owner:currentUser["_delegate"]["email"] ,title:"",message:"",tags:"",selectedFile:""});
     const classes = useStyles();
     const post = useSelector((state) => currentId ? state.posts.find((p) => p._id === currentId) : null) ;
     const dispatch = useDispatch();    
@@ -21,6 +22,7 @@ export const Form = ({currentId, setCurrentId}) => {
     const handleSubmit = (e)=>{
         e.preventDefault(); // to prevent refresh
         if (currentId){
+            console.log(postData)
             dispatch(updatePost(currentId,postData));
         }
         else{
@@ -31,7 +33,7 @@ export const Form = ({currentId, setCurrentId}) => {
 
     const clear = ()=>{
         setCurrentId(null);
-        setPostData({creator:"", title:"",message:"",tags:"",selectedFile:""});
+        setPostData({creator:"", owner:currentUser["_delegate"]["email"]  ,  title:"",message:"",tags:"",selectedFile:""});
     }
     return(
         <Paper className={classes.paper}>

@@ -4,13 +4,13 @@ import {FETCH_ALL,CREATE,UPDATE,DELETE,LIKE} from '../constants/actionTypes';
 // Action Creators
 // DISPATCH ACTIONS UNDERNEATH IMPORTED TO MAINLY COMPONENTS AND FORMS AND POSTS.
 
-export const getPosts = () => async (dispatch) => {
+export const getPosts = (id) => async (dispatch) => {
 
     // {data} is the response of the api.fetchPosts() as its like const response = await whatever;
     // {} brackets are for objects, as data is an object
-
     try {
-        const {data} = await api.fetchPosts();
+        const {data} = await api.fetchPosts({ownerinfo:id});
+        console.log(data)
         dispatch({type: FETCH_ALL, payload:data});
         
     } catch (error) {
