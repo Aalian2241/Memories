@@ -3,7 +3,7 @@
 
 import axios from "axios";
 //const url = 'https://memories-reactapp-project.herokuapp.com/posts';
-const url= "http://localhost:5000/posts";
+const url= "https://memories-rp.herokuapp.com/posts";
 export const fetchPosts = (id) => axios.post(url,id);
 export const createPosts = (newPost) => axios.post(`${url}/create`,newPost);
 export const updatePost = (id,updatedPost) => axios.patch(`${url}/${id}`,updatedPost);
